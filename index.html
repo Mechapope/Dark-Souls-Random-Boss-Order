@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107030567-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments)};
+      gtag('js', new Date());
+      gtag('config', 'UA-107030567-1');
+    </script>
+
+    <title>Dark Souls Random Boss Order Generator - RBO</title>
+
+    <meta name="description=" content="Dark Souls Random Boss Order (RBO) Generator - with options for various skips, glitches, or glitchless runs.">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
+
+    <script src="shuffle.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="col-md-12 col-xs-12">
+
+            <h1 class="text-center">Dark Souls Random Boss Order Generator</h1>
+            <label for="txtSeed"><strong>Seed: </strong>(If left blank, one will be generated for you)</label><br />
+            <input type="text" id="txtSeed" class="form-control" /><br /><br />
+
+            <p><strong>Options:</strong></p>
+
+            <div class="option-group">
+                <input type="checkbox" id="chkOandS" />
+                <label for="chkOandS" data-toggle="tooltip" data-placement="right" title="Boss order will tell you to kill either Ornstein or Smough first">Randomize Ornstein/Smough</label><br />
+
+                <input type="checkbox" id="chkFiresageElevatorClip" />
+                <label for="chkFiresageElevatorClip" data-toggle="tooltip" data-placement="right" title="Allow Firesage before Lordvessel">Firesage Elevator Clip</label><br />
+
+                <input type="checkbox" id="chkCeaselessSkip" />
+                <label for="chkCeaselessSkip">Ceaseless Skip</label><br />
+
+                <input type="checkbox" id="chkFiresageSkip" />
+                <label for="chkFiresageSkip" data-toggle="tooltip" data-placement="right" title="Allow Centipede before Firesage">Firesage Skip</label><br />
+
+                <input type="checkbox" id="chkSensSkip" />
+                <label for="chkSensSkip">Sen's Gate Skip</label><br />
+
+                <input type="checkbox" id="chkAsylumSkip" />
+                <label for="chkAsylumSkip">Asylum Demon Skip</label><br />
+
+                <input type="checkbox" id="chkPinwheelSkip" />
+                <label for="chkPinwheelSkip">Pinwheel Skip</label><br />
+
+                <input type="checkbox" id="chkCapraSkip" />
+                <label for="chkCapraSkip">Capra Skip</label><br />
+
+                <input type="checkbox" id="chkArtoriasSkip" />
+                <label for="chkArtoriasSkip">Artorias Skip</label><br />
+
+                <input type="checkbox" id="chkQuelaagSkip" />
+                <label for="chkQuelaagSkip">Quelaag Skip</label><br />
+
+                <input type="checkbox" id="chkHideSplits" onchange="ToggleResults();" />
+                <label for="chkHideSplits" data-toggle="tooltip" data-placement="right" title="Hides boss list on the page. Use the download splits button and use LiveSplit to see bosses.">Hide Results (Use with a LiveSplit layout that only shows the current split)</label><br />
+
+            </div>
+
+            <br /><br />
+
+            <input type="button" value="Generate" onclick="generateRandomOrder(false);" class="btn btn-primary" /><br /><br />
+            <label for="txtShareURL">Share link:</label><br />
+            <input type="text" readonly="readonly" id="txtShareURL" class="form-control" /><br /><br />
+
+            <div id="lblSplitsHidden" style="color:red"></div>
+
+            <br />
+
+            <div id="order"></div>
+
+            <br />
+
+            <div id="downloadSection" style="display:none;">
+                <input type="button" id="btnDownload" onclick="DownloadSplits();" value="Download Split file" class="btn btn-primary" />
+                <br /><br />
+                <label for="txtAltDownload">
+                    <strong>Note:</strong>
+                    Download button may not work in all browsers.<br />
+                    If it doesn't work, try another browser or copy the following and save it as a .lss file.
+                </label><br /><br />
+                <textarea id="txtAltDownload" rows="5" cols="50"></textarea>
+            </div>
+
+            <div class="text-center">
+                <br /><br />
+                <p>For suggestions or bug reports, DM me on Discord: Mechapope#7309</p>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

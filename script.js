@@ -167,6 +167,12 @@ function GenerateValidBosses(options, shuffled) {
     var artoriasSkip = document.getElementById("chkArtoriasSkip").checked;
     var quelaagSkip = document.getElementById("chkQuelaagSkip").checked;
 
+    var lordvesselPlaced = false;
+
+    if (shuffled.indexOf("Ornstein") > -1 && shuffled.indexOf("Quelaag") > -1 && shuffled.indexOf("Gargoyles") > -1) {
+        lordvesselPlaced = true;
+    }
+
     var validBosses = new Array();
 
     //Boss order logic goes here
@@ -212,14 +218,14 @@ function GenerateValidBosses(options, shuffled) {
                 }
             }
             else if (options[i] == "Nito") {
-                if (shuffled.indexOf("Ornstein") > -1) {
+                if (lordvesselPlaced) {
                     if (pinwheelSkip || shuffled.indexOf("Pinwheel") > -1) {
                         validBosses.push(options[i]);
                     }
                 }
             }
             else if (options[i] == "Seath") {
-                if (shuffled.indexOf("Ornstein") > -1) {
+                if (lordvesselPlaced) {
                     validBosses.push(options[i]);
                 }
             }
@@ -238,7 +244,7 @@ function GenerateValidBosses(options, shuffled) {
                     validBosses.push(options[i]);
                 }
                 else {
-                    if (shuffled.indexOf("Ornstein") > -1) {
+                    if (lordvesselPlaced) {
                         if ((ceaselessSkip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)) || shuffled.indexOf("Ceaseless Discharge") > -1) {
                             validBosses.push(options[i]);
                         }
@@ -256,7 +262,7 @@ function GenerateValidBosses(options, shuffled) {
                 }
             }
             else if (options[i] == "Sanctuary Guardian") {
-                if (shuffled.indexOf("Ornstein") > -1) {
+                if (lordvesselPlaced) {
                     validBosses.push(options[i]);
                 }
             }
@@ -450,4 +456,3 @@ function downloadFile (filename, data) {
         document.body.removeChild(elem);
     }
 }
-

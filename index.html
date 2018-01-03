@@ -19,7 +19,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
 
     <script src="shuffle.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=4"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -45,8 +45,13 @@
                 <input type="checkbox" id="chkFiresageSkip" />
                 <label for="chkFiresageSkip" data-toggle="tooltip" data-placement="right" title="Allow Centipede before Firesage">Firesage Skip</label><br />
 
-                <input type="checkbox" id="chkSensSkip" />
+                <input type="checkbox" id="chkSensSkip" onchange="ToggleReverseSensSkip();" />
                 <label for="chkSensSkip">Sen's Gate Skip</label><br />
+				
+				<span id="reverseSensSkip" style="display:none; margin-left: 20px; margin-bottom: 5px;">
+					<input type="checkbox" id="chkReverseSensSkip" />
+					<label for="chkReverseSensSkip" data-toggle="tooltip" data-placement="right" title="Allows non-Anor Londo bosses between Priscilla and O&S. May require skipping backwards through Sen's Gate using a Fall Control quitout or Death Cam.">Reverse Sen's Gate Skip</label><br />
+				</span>
 
                 <input type="checkbox" id="chkAsylumSkip" />
                 <label for="chkAsylumSkip">Asylum Demon Skip</label><br />
@@ -64,7 +69,7 @@
                 <label for="chkQuelaagSkip">Quelaag Skip</label><br />
 
                 <input type="checkbox" id="chkHideSplits" onchange="ToggleResults();" />
-                <label for="chkHideSplits" data-toggle="tooltip" data-placement="right" title="Hides boss list on the page. Use the download splits button and use LiveSplit to see bosses.">Hide Results (Use with a LiveSplit layout that only shows the current split)</label><br />
+                <label for="chkHideSplits" data-toggle="tooltip" data-placement="right" title="Hides boss list on the page. Use the download splits button and use LiveSplit to see the boss order.">Hide Results (Use with a LiveSplit layout that only shows the current split)</label><br />
 
             </div>
 
@@ -86,9 +91,7 @@
                 <input type="button" id="btnDownload" onclick="DownloadSplits();" value="Download Split file" class="btn btn-primary" />
                 <br /><br />
                 <label for="txtAltDownload">
-                    <strong>Note:</strong>
-                    Download button may not work in all browsers.<br />
-                    If it doesn't work, try another browser or copy the following and save it as a .lss file.
+                    If download doesn't work, try another browser or copy the following and save it as a .lss file.
                 </label><br /><br />
                 <textarea id="txtAltDownload" rows="5" cols="50"></textarea>
             </div>

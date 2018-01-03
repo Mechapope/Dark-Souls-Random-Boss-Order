@@ -28,6 +28,11 @@ window.onload = function () {
 
     if (getParameterByName("sgs") == "1") {
         document.getElementById("chkSensSkip").checked = true;
+        document.getElementById("reverseSensSkip").style.display = "block";
+    }
+
+    if (getParameterByName("rsgs") == "1") {
+        document.getElementById("chkReverseSensSkip").checked = true;
     }
 
     if (getParameterByName("as") == "1") {
@@ -161,6 +166,7 @@ function GenerateValidBosses(options, shuffled) {
     var ceaselessSkip = document.getElementById("chkCeaselessSkip").checked;
     var firesageSkip = document.getElementById("chkFiresageSkip").checked;
     var sensGateSkip = document.getElementById("chkSensSkip").checked;
+    var reverseSensSkip = document.getElementById("chkReverseSensSkip").checked;
     var asylumDemonSkip = document.getElementById("chkAsylumSkip").checked;
     var pinwheelSkip = document.getElementById("chkPinwheelSkip").checked;
     var capraDemonSkip = document.getElementById("chkCapraSkip").checked;
@@ -168,9 +174,14 @@ function GenerateValidBosses(options, shuffled) {
     var quelaagSkip = document.getElementById("chkQuelaagSkip").checked;
 
     var lordvesselPlaced = false;
+    var sensGateOpen = false;
 
-    if (shuffled.indexOf("Ornstein") > -1 && shuffled.indexOf("Quelaag") > -1 && shuffled.indexOf("Gargoyles") > -1) {
+    if (shuffled.indexOf("Ornstein") > -1 && ((shuffled.indexOf("Quelaag") > -1 && shuffled.indexOf("Gargoyles") > -1) || shuffled.indexOf("Four Kings") > -1)) {
         lordvesselPlaced = true;
+    }
+
+    if (shuffled.indexOf("Quelaag") > -1 && shuffled.indexOf("Gargoyles") > -1) {
+        sensGateOpen = true;
     }
 
     var validBosses = new Array();
@@ -197,6 +208,12 @@ function GenerateValidBosses(options, shuffled) {
                     validBosses.push(options[i]);
                 }
             }
+            else if (options[i] == "Stray Demon") {
+                //with asylum demon skip, dont have stray before asylum cuz asylum demon likes to jump down with you to stray and kill himself
+                if (shuffled.indexOf("Asylum Demon") > -1) {
+                    validBosses.push(options[i]);
+                }
+            }
             else if (options[i] == "Iron Golem") {
                 if (sensGateSkip || (shuffled.indexOf("Gargoyles") > -1 && shuffled.indexOf("Quelaag") > -1)) {
                     validBosses.push(options[i]);
@@ -208,12 +225,26 @@ function GenerateValidBosses(options, shuffled) {
                 }
             }
             else if (options[i] == "Gwyndolin") {
-                if (shuffled.indexOf("Iron Golem") > -1) {
+                //if doing reverse sgs or sens gate is open, only req is after IG
+                if (reverseSensSkip || !sensGateSkip) {
+                    if (shuffled.indexOf("Iron Golem") > -1) {
+                        validBosses.push(options[i]);
+                    }
+                }
+                //doing sgs without reverse sgs, gwyndolin has to be after ornstein, or sens gate must be open
+                else if (shuffled.indexOf("Iron Golem") > -1 && (shuffled.indexOf("Ornstein") > -1 || sensGateOpen)) {                    
                     validBosses.push(options[i]);
                 }
             }
             else if (options[i] == "Priscilla") {
-                if (shuffled.indexOf("Iron Golem") > -1) {
+                //if doing reverse sgs or sens gate is open, only req is after IG
+                if (reverseSensSkip || !sensGateSkip) {
+                    if (shuffled.indexOf("Iron Golem") > -1) {
+                        validBosses.push(options[i]);
+                    }
+                }
+                //doing sgs without reverse sgs, gwyndolin has to be after lordvessel, or sens gate must be open
+                else if (shuffled.indexOf("Iron Golem") > -1 && (shuffled.indexOf("Ornstein") > -1 || sensGateOpen)) {
                     validBosses.push(options[i]);
                 }
             }
@@ -301,6 +332,7 @@ function GenerateShareURL(seed) {
     var csCheckbox = document.getElementById("chkCeaselessSkip");
     var fsCheckbox = document.getElementById("chkFiresageSkip");
     var sgsCheckbox = document.getElementById("chkSensSkip");
+    var rsgsCheckbox = document.getElementById("chkReverseSensSkip");
     var asCheckbox = document.getElementById("chkAsylumSkip");
     var psCheckbox = document.getElementById("chkPinwheelSkip");
     var casCheckbox = document.getElementById("chkCapraSkip");
@@ -326,6 +358,10 @@ function GenerateShareURL(seed) {
 
     if (sgsCheckbox.checked) {
         shareURL += "&sgs=1";
+    }
+
+    if (rsgsCheckbox.checked) {
+        shareURL += "&rsgs=1";
     }
 
     if (asCheckbox.checked) {
@@ -360,17 +396,28 @@ function ToggleResults() {
 	
 	var bossList = document.getElementById('order');
 	
-	if (bossList.style.visibility != 'hidden')
-	{
+	if (bossList.style.visibility != 'hidden') {
 		bossList.style.visibility = 'hidden';
 		bossList.style.height = '0';
 		document.getElementById('lblSplitsHidden').innerHTML = 'Splits hidden';
 	}
-	else 
-	{
+	else {
 		bossList.style.visibility = 'visible';
 		bossList.style.height = 'initial';
 		document.getElementById('lblSplitsHidden').innerHTML = '';
+	}	
+}
+
+function ToggleReverseSensSkip() {
+	
+    var checkboxDiv = document.getElementById("reverseSensSkip");
+
+	if (document.getElementById("chkSensSkip").checked) {
+	    checkboxDiv.style.display = "block";
+	}
+	else {
+	    checkboxDiv.style.display = "none";
+	    document.getElementById("chkReverseSensSkip").checked = false;
 	}	
 }
 

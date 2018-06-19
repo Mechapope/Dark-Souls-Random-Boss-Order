@@ -55,6 +55,10 @@ window.onload = function () {
         document.getElementById("chkQuelaagSkip").checked = true;
     }
 
+    if (getParameterByName("sn") == 1) {
+        document.getElementById("chkSplitNumbers").checked = true;
+    }
+
 	if (getParameterByName("hide") == "1") {
         document.getElementById("chkHideSplits").checked = true;
     }
@@ -126,10 +130,13 @@ function generateRandomOrder(useQueryString) {
 
     if (document.getElementById("chkOandS").checked) {
         //Randomly choose value of 0 or 1 to decide if Smough goes before or after Ornstein
-        var chosenValue = Math.random() < 0.5 ? 0 : 1;
-
-        //Inserts Smough before or after Ornstein depending on value of the random number
-        shuff.splice(shuff.indexOf("Ornstein") + chosenValue, 0, "Smough");
+        //it uses the seed so it will be the same everytime
+        if(Math.random() < 0.5) {
+            shuff[shuff.indexOf("Ornstein")] = "Smough and Super Ornstein";
+        }
+        else {
+            shuff[shuff.indexOf("Ornstein")] = "Ornstein and Super Smough";
+        }
     }
     else {
         //If not randomizing O/S order, just change the split name to include Smough too
@@ -141,15 +148,20 @@ function generateRandomOrder(useQueryString) {
 
     //Append boss list to page
     for(var i = 0; i < shuff.length; i++) {
-        bossListText.innerHTML += shuff[i] + "<br/>";
+
+        if(document.getElementById("chkSplitNumbers").checked) {
+            bossListText.innerHTML += "<div style='padding-bottom: 5px;'>#" + (i+1) + " " + shuff[i] + "<div>";
+        }
+        else {
+            bossListText.innerHTML += "<div style='padding-bottom: 5px;'>" + shuff[i] + "</div>";
+        }        
     }
 
     //Hide splits if checked
     var hideSplitsCheckbox = document.getElementById("chkHideSplits");
 	if (hideSplitsCheckbox.checked) {
 	    var bossList = document.getElementById('order');
-	    bossList.style.visibility = 'hidden';
-	    bossList.style.height = '0';
+	    bossList.style.display = 'none';
 	    document.getElementById('lblSplitsHidden').innerHTML = 'Splits hidden';
 	}
 	
@@ -327,64 +339,55 @@ function GenerateShareURL(seed) {
 
     shareURL += "?seed=" + seed;
 
-    var OandSCheckbox = document.getElementById("chkOandS");
-    var feCheckbox = document.getElementById("chkFiresageElevatorClip");
-    var csCheckbox = document.getElementById("chkCeaselessSkip");
-    var fsCheckbox = document.getElementById("chkFiresageSkip");
-    var sgsCheckbox = document.getElementById("chkSensSkip");
-    var rsgsCheckbox = document.getElementById("chkReverseSensSkip");
-    var asCheckbox = document.getElementById("chkAsylumSkip");
-    var psCheckbox = document.getElementById("chkPinwheelSkip");
-    var casCheckbox = document.getElementById("chkCapraSkip");
-    var arsCheckbox = document.getElementById("chkArtoriasSkip");
-    var qsCheckbox = document.getElementById("chkQuelaagSkip");
-    var hideSplitsCheckbox = document.getElementById("chkHideSplits");
-
-    if (OandSCheckbox.checked) {
+    if(document.getElementById("chkOandS").checked) {
         shareURL += "&os=1";
     }
 
-    if (feCheckbox.checked) {
+    if(document.getElementById("chkFiresageElevatorClip").checked) {
         shareURL += "&fe=1";
     }
 
-    if (csCheckbox.checked) {
+    if(document.getElementById("chkCeaselessSkip").checked) {
         shareURL += "&cs=1";
     }
 
-    if (fsCheckbox.checked) {
+    if(document.getElementById("chkFiresageSkip").checked) {
         shareURL += "&fs=1";
     }
 
-    if (sgsCheckbox.checked) {
+    if(document.getElementById("chkSensSkip").checked) {
         shareURL += "&sgs=1";
     }
 
-    if (rsgsCheckbox.checked) {
+    if(document.getElementById("chkReverseSensSkip").checked) {
         shareURL += "&rsgs=1";
     }
 
-    if (asCheckbox.checked) {
+    if(document.getElementById("chkAsylumSkip").checked) {
         shareURL += "&as=1";
     }
 
-    if (psCheckbox.checked) {
+    if(document.getElementById("chkPinwheelSkip").checked) {
         shareURL += "&ps=1";
     }
 
-    if (casCheckbox.checked) {
+    if(document.getElementById("chkCapraSkip").checked) {
         shareURL += "&cas=1";
     }
 
-    if (arsCheckbox.checked) {
+    if(document.getElementById("chkArtoriasSkip").checked) {
         shareURL += "&ars=1";
     }
 
-    if (qsCheckbox.checked) {
+    if(document.getElementById("chkQuelaagSkip").checked) {
         shareURL += "&qs=1";
     }
 
-    if (hideSplitsCheckbox.checked) {
+    if(document.getElementById("chkSplitNumbers").checked) {
+        shareURL += "&sn=1";
+    }
+
+    if(document.getElementById("chkHideSplits").checked) {
         shareURL += "&hide=1";
     }
 
@@ -394,18 +397,16 @@ function GenerateShareURL(seed) {
 //Hide/Show results
 function ToggleResults() {
 	
-	var bossList = document.getElementById('order');
-	
-	if (bossList.style.visibility != 'hidden') {
-		bossList.style.visibility = 'hidden';
-		bossList.style.height = '0';
+    var bossList = document.getElementById('order');
+    
+    if (bossList.style.display != 'none') {
+		bossList.style.display = 'none';
 		document.getElementById('lblSplitsHidden').innerHTML = 'Splits hidden';
 	}
 	else {
-		bossList.style.visibility = 'visible';
-		bossList.style.height = 'initial';
+		bossList.style.display = 'initial';
 		document.getElementById('lblSplitsHidden').innerHTML = '';
-	}	
+	}
 }
 
 function ToggleReverseSensSkip() {
@@ -422,7 +423,7 @@ function ToggleReverseSensSkip() {
 }
 
 //Generates XML then downloads
-function DownloadSplits(){	
+function DownloadSplits() {	
 	var xml = generateXML(shuff);
 	downloadFile("Dark Souls - RBO.lss", xml);
 }
@@ -467,11 +468,18 @@ function generateXML(bosses) {
 	XMLstring += '<Offset>00:00:00</Offset> \n';
 	XMLstring += '<AttemptCount>0</AttemptCount> \n';
 	XMLstring += '<AttemptHistory /> \n';
-	XMLstring += '<Segments> \n';
+    XMLstring += '<Segments> \n';
 	
 	for (var i = 0; i < bosses.length; i++) {
-		XMLstring += '<Segment> \n';
-		XMLstring += '<Name>' + bosses[i] +'</Name> \n';
+        XMLstring += '<Segment> \n';
+
+        if (document.getElementById("chkSplitNumbers").checked) {
+            XMLstring += '<Name>#' + (i+1) + ' ' + bosses[i] +'</Name> \n';
+        }
+        else {
+            XMLstring += '<Name>' + bosses[i] +'</Name> \n';
+        }
+		
 		XMLstring += '<Icon /> \n';
 		XMLstring += '<SplitTimes> \n';
 		XMLstring += '<SplitTime name="Personal Best" /> \n';

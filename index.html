@@ -33,6 +33,7 @@
             <p><strong>Options:</strong></p>
 
             <div class="option-group">
+
                 <input type="checkbox" id="chkOandS" />
                 <label for="chkOandS" data-toggle="tooltip" data-placement="right" title="Boss order will tell you to kill either Ornstein or Smough first">Randomize Ornstein/Smough</label><br />
 
@@ -68,20 +69,21 @@
                 <input type="checkbox" id="chkQuelaagSkip" />
                 <label for="chkQuelaagSkip">Quelaag Skip</label><br />
 
+                <input type="checkbox" id="chkSplitNumbers" style="margin-top: 5px;" />
+                <label for="chkSplitNumbers">Boss number in split names</label><br />
+
                 <input type="checkbox" id="chkHideSplits" onchange="ToggleResults();" />
                 <label for="chkHideSplits" data-toggle="tooltip" data-placement="right" title="Hides boss list on the page. Use the download splits button and use LiveSplit to see the boss order.">Hide Results (Use with a LiveSplit layout that only shows the current split)</label><br />
 
             </div>
 
-            <br /><br />
+            <br />
 
             <input type="button" value="Generate" onclick="generateRandomOrder(false);" class="btn btn-primary" /><br /><br />
             <label for="txtShareURL">Share link:</label><br />
-            <input type="text" readonly="readonly" id="txtShareURL" class="form-control" /><br /><br />
+            <input type="text" readonly="readonly" id="txtShareURL" class="form-control" /><br />
 
             <div id="lblSplitsHidden" style="color:red"></div>
-
-            <br />
 
             <div id="order"></div>
 

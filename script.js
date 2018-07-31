@@ -353,10 +353,6 @@ function GenerateValidBosses(options, shuffled) {
         }
     }
 
-    if (validBosses.length <= 0) {
-        console.log(":(");
-    }
-
     return validBosses;
 }
 

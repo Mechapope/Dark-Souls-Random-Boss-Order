@@ -55,6 +55,14 @@ window.onload = function () {
         document.getElementById("chkQuelaagSkip").checked = true;
     }
 
+    if (getParameterByName("oh") == "1") {
+        document.getElementById("chkOfferHumanities").checked = true;
+    }
+
+    if (getParameterByName("dfs") == "1") {
+        document.getElementById("chkDeathcamFiresageSkip").checked = true;
+    }
+
     if (getParameterByName("sn") == 1) {
         document.getElementById("chkSplitNumbers").checked = true;
     }
@@ -130,7 +138,6 @@ function generateRandomOrder(useQueryString) {
 
     if (document.getElementById("chkOandS").checked) {
         //Randomly choose value of 0 or 1 to decide if Smough goes before or after Ornstein
-        //it uses the seed so it will be the same everytime
         if(Math.random() < 0.5) {
             shuff[shuff.indexOf("Ornstein")] = "Smough and Super Ornstein";
         }
@@ -184,6 +191,8 @@ function GenerateValidBosses(options, shuffled) {
     var capraDemonSkip = document.getElementById("chkCapraSkip").checked;
     var artoriasSkip = document.getElementById("chkArtoriasSkip").checked;
     var quelaagSkip = document.getElementById("chkQuelaagSkip").checked;
+    var offerHumanities = document.getElementById("chkOfferHumanities").checked;
+    var deathcamFiresageSkip = document.getElementById("chkDeathcamFiresageSkip").checked;
 
     var lordvesselPlaced = false;
     var sensGateOpen = false;
@@ -201,133 +210,151 @@ function GenerateValidBosses(options, shuffled) {
     //Boss order logic goes here
     for (var i = 0; i < options.length; i++) {
 
-        //Asylum demon first if not doing asylum skip
-        if (shuffled.length == 0 && !asylumDemonSkip) {
-            validBosses.push("Asylum Demon");
-            break;
-        }
-        //Gwyn always last
-        else if (options[i] == "Gwyn") {
-            if (shuffled.length == 25) {
+        //Check requirements of boss. Only add to list if requirements met
+        if (options[i] == "Asylum Demon") {
+            //asylum demon always first if not doing asylum skip
+            if (shuffled.length == 0 && !asylumDemonSkip) {
                 validBosses.push(options[i]);
                 break;
-            }
-        }        
-        else {
-            //Check requirements of boss. Only add to list if requirements met
-            if (options[i] == "Gaping Dragon") {
-                if (capraDemonSkip || shuffled.indexOf("Capra Demon") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Stray Demon") {
-                //with asylum demon skip, dont have stray before asylum cuz asylum demon likes to jump down with you to stray and kill himself
-                if (shuffled.indexOf("Asylum Demon") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Iron Golem") {
-                if (sensGateSkip || (shuffled.indexOf("Gargoyles") > -1 && shuffled.indexOf("Quelaag") > -1)) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Ornstein") {
-                if (shuffled.indexOf("Iron Golem") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Gwyndolin") {
-                //if doing reverse sgs or sens gate is open, only req is after IG
-                if (reverseSensSkip || !sensGateSkip) {
-                    if (shuffled.indexOf("Iron Golem") > -1) {
-                        validBosses.push(options[i]);
-                    }
-                }
-                //doing sgs without reverse sgs, gwyndolin has to be after ornstein, or sens gate must be open
-                else if (shuffled.indexOf("Iron Golem") > -1 && (shuffled.indexOf("Ornstein") > -1 || sensGateOpen)) {                    
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Priscilla") {
-                //if doing reverse sgs or sens gate is open, only req is after IG
-                if (reverseSensSkip || !sensGateSkip) {
-                    if (shuffled.indexOf("Iron Golem") > -1) {
-                        validBosses.push(options[i]);
-                    }
-                }
-                //doing sgs without reverse sgs, gwyndolin has to be after lordvessel, or sens gate must be open
-                else if (shuffled.indexOf("Iron Golem") > -1 && (shuffled.indexOf("Ornstein") > -1 || sensGateOpen)) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Nito") {
-                if (lordvesselPlaced) {
-                    if (pinwheelSkip || shuffled.indexOf("Pinwheel") > -1) {
-                        validBosses.push(options[i]);
-                    }
-                }
-            }
-            else if (options[i] == "Seath") {
-                if (lordvesselPlaced) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Four Kings") {
-                if (shuffled.indexOf("Sif") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Ceaseless Discharge") {
-                if (quelaagSkip || shuffled.indexOf("Quelaag") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Demon Firesage") {
-                if (firesageElevatorClip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)) {
-                    validBosses.push(options[i]);
-                }
-                else {
-                    if (lordvesselPlaced) {
-                        if ((ceaselessSkip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)) || shuffled.indexOf("Ceaseless Discharge") > -1) {
-                            validBosses.push(options[i]);
-                        }
-                    }
-                }
-            }
-            else if (options[i] == "Centipede Demon") {
-                if (((firesageSkip && ceaselessSkip) || shuffled.indexOf("Demon Firesage") > -1) && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)){
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Bed of Chaos") {
-                if (shuffled.indexOf("Centipede Demon") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Sanctuary Guardian") {
-                if (lordvesselPlaced) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Artorias") {
-                if (shuffled.indexOf("Sanctuary Guardian") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Manus") {
-                if ((artoriasSkip || shuffled.indexOf("Artorias") > -1) && shuffled.indexOf("Sanctuary Guardian") > -1) {
-                    validBosses.push(options[i]);
-                }
-            }
-            else if (options[i] == "Kalameet") {
-                if (shuffled.indexOf("Artorias") > -1) {
-                    validBosses.push(options[i]);
-                }
             }
             else {
                 validBosses.push(options[i]);
             }
+        }        
+        else if (options[i] == "Gwyn") {
+            //Gwyn always last
+            if (shuffled.length == 25) {
+                validBosses.push(options[i]);
+                break;
+            }
         }
+        else if (options[i] == "Gaping Dragon") {
+            if (capraDemonSkip || shuffled.indexOf("Capra Demon") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Stray Demon") {
+            //check asylum demon is dead, otherwise he might jump down to stray and get himself killed
+            if (shuffled.indexOf("Asylum Demon") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Iron Golem") {
+            if (sensGateSkip || sensGateOpen) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Ornstein") {
+            if (shuffled.indexOf("Iron Golem") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Gwyndolin") {
+            //if doing reverse sgs or sens gate is open, only req is after IG
+            if ((reverseSensSkip || sensGateOpen) && shuffled.indexOf("Iron Golem") > -1) {
+                validBosses.push(options[i]);
+            }
+            //player has no way to exit sens, has to come after lordvessel
+            else if (shuffled.indexOf("Iron Golem") > -1 && shuffled.indexOf("Ornstein") > -1) {                    
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Priscilla") {
+            //if doing reverse sgs or sens gate is open, only req is after IG
+            if ((reverseSensSkip || sensGateOpen) && shuffled.indexOf("Iron Golem") > -1) {
+                validBosses.push(options[i]);
+            }
+            //player has no way to exit sens, has to come after lordvessel
+            else if (shuffled.indexOf("Iron Golem") > -1 && shuffled.indexOf("Ornstein") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Nito") {
+            if (lordvesselPlaced) {
+                if (pinwheelSkip || shuffled.indexOf("Pinwheel") > -1) {
+                    validBosses.push(options[i]);
+                }
+            }
+        }
+        else if (options[i] == "Seath") {
+            if (lordvesselPlaced) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Four Kings") {
+            if (shuffled.indexOf("Sif") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Ceaseless Discharge") {
+            if (quelaagSkip || shuffled.indexOf("Quelaag") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Demon Firesage") {
+            //doing elevator clip and past quelaag
+            if (firesageElevatorClip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)) {
+                validBosses.push(options[i]);
+            }
+            else if (firesageSkip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)) {
+                validBosses.push(options[i]);
+            }
+            //need lordvessel, past quelaag, past ceaseless
+            else if (lordvesselPlaced && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Centipede Demon") {
+            //doing firesage skip, or doing elevator clip and firesage is dead. past quelaag
+            if (firesageSkip || (firesageElevatorClip && shuffled.indexOf("Demon Firesage") > -1) && (quelaagSkip || shuffled.indexOf("Quelaag") > -1)) {
+                validBosses.push(options[i]);
+            }
+            else if (shuffled.indexOf("Demon Firesage") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Bed of Chaos") {
+            //past quelaag, and doing firesage skip OR elevator clip w/ demon dead OR placed lordvessel and past ceaseless
+            if (offerHumanities && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && ((firesageSkip || (firesageElevatorClip && shuffled.indexOf("Demon Firesage") > -1)) || (lordvesselPlaced && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)))) {
+                validBosses.push(options[i]);
+            }
+            //past quelaag, and either a) LV is placed w/ firesage alive and past ceaseless, or b) LV NOT placed w/ ceaseless alive and ceaseless skipping
+            else if (deathcamFiresageSkip && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && (lordvesselPlaced && shuffled.indexOf("Demon Firesage") == -1 && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)) || (!lordvesselPlaced && ceaselessSkip && shuffled.indexOf("Ceaseless Discharge") == -1)) {
+                validBosses.push(options[i]);
+            }
+            else {
+                if (shuffled.indexOf("Centipede Demon") > -1) {
+                    validBosses.push(options[i]);
+                }
+            }                
+        }
+        else if (options[i] == "Sanctuary Guardian") {
+            if (lordvesselPlaced) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Artorias") {
+            if (shuffled.indexOf("Sanctuary Guardian") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Manus") {
+            if ((artoriasSkip || shuffled.indexOf("Artorias") > -1) && shuffled.indexOf("Sanctuary Guardian") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else if (options[i] == "Kalameet") {
+            if (shuffled.indexOf("Artorias") > -1) {
+                validBosses.push(options[i]);
+            }
+        }
+        else {
+            validBosses.push(options[i]);
+        }
+    }
+
+    if (validBosses.length <= 0) {
+        console.log(":(");
     }
 
     return validBosses;
@@ -381,6 +408,14 @@ function GenerateShareURL(seed) {
 
     if(document.getElementById("chkQuelaagSkip").checked) {
         shareURL += "&qs=1";
+    }
+
+    if (document.getElementById("chkOfferHumanities").checked) {
+        shareURL += "&oh=1";
+    }
+
+    if (document.getElementById("chkDeathcamFiresageSkip").checked) {
+        shareURL += "&dfs=1";
     }
 
     if(document.getElementById("chkSplitNumbers").checked) {

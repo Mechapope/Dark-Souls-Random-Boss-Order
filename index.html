@@ -12,6 +12,7 @@
     <title>Dark Souls Random Boss Order Generator - RBO</title>
 
     <meta name="description" content="Dark Souls Random Boss Order (RBO) Generator - with options for various skips, glitches, or glitchless runs.">
+    <link href="/rbo/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.js"></script>
 
@@ -19,7 +20,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js"></script>
 
     <script src="shuffle.js"></script>
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=6"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -44,14 +45,14 @@
                 <label for="chkCeaselessSkip">Ceaseless Skip</label><br />
 
                 <input type="checkbox" id="chkFiresageSkip" />
-                <label for="chkFiresageSkip" data-toggle="tooltip" data-placement="right" title="Allow Centipede before Firesage">Firesage Skip</label><br />
+                <label for="chkFiresageSkip" data-toggle="tooltip" data-placement="right" title="Sequence breaks that use Eingyi OoB or mulWorm OoB">Firesage Skip</label><br />
 
                 <input type="checkbox" id="chkSensSkip" onchange="ToggleReverseSensSkip();" />
                 <label for="chkSensSkip">Sen's Gate Skip</label><br />
 				
 				<span id="reverseSensSkip" style="display:none; margin-left: 20px; margin-bottom: 5px;">
 					<input type="checkbox" id="chkReverseSensSkip" />
-					<label for="chkReverseSensSkip" data-toggle="tooltip" data-placement="right" title="Allows non-Anor Londo bosses between Priscilla and O&S. May require skipping backwards through Sen's Gate using a Fall Control quitout or Death Cam.">Reverse Sen's Gate Skip</label><br />
+					<label for="chkReverseSensSkip" data-toggle="tooltip" data-placement="right" title="Allows non-Anor Londo bosses between Iron Golem and O&S. May require skipping backwards through Sen's Gate using a Fall Control quitout or Death Cam.">Reverse Sen's Gate Skip</label><br />
 				</span>
 
                 <input type="checkbox" id="chkAsylumSkip" />
@@ -63,18 +64,23 @@
                 <input type="checkbox" id="chkCapraSkip" />
                 <label for="chkCapraSkip">Capra Skip</label><br />
 
-                <input type="checkbox" id="chkArtoriasSkip" />
-                <label for="chkArtoriasSkip">Artorias Skip</label><br />
-
                 <input type="checkbox" id="chkQuelaagSkip" />
                 <label for="chkQuelaagSkip">Quelaag Skip</label><br />
+
+                <input type="checkbox" id="chkOfferHumanities" />
+                <label for="chkOfferHumanities" data-toggle="tooltip" title="Offer humanities to open the Daughter of Chaos shortcut">Daughter of Chaos shortcut</label><br />
+
+                <input type="checkbox" id="chkDeathcamFiresageSkip" />
+                <label for="chkDeathcamFiresageSkip" data-toggle="tooltip" title="Do Firesage skip in Death cam, allowing you to access BoC before Centipede">Deathcam Firesage skip</label><br />
+
+                <input type="checkbox" id="chkArtoriasSkip" />
+                <label for="chkArtoriasSkip">Artorias Skip</label><br />
 
                 <input type="checkbox" id="chkSplitNumbers" style="margin-top: 5px;" />
                 <label for="chkSplitNumbers">Boss number in split names</label><br />
 
                 <input type="checkbox" id="chkHideSplits" onchange="ToggleResults();" />
                 <label for="chkHideSplits" data-toggle="tooltip" data-placement="right" title="Hides boss list on the page. Use the download splits button and use LiveSplit to see the boss order.">Hide Results (Use with a LiveSplit layout that only shows the current split)</label><br />
-
             </div>
 
             <br />

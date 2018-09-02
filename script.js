@@ -314,8 +314,8 @@ function GenerateValidBosses(options, shuffled) {
             }
         }
         else if (options[i] == "Bed of Chaos") {
-            //past quelaag, and doing firesage skip OR elevator clip w/ demon dead OR placed lordvessel and past ceaseless
-            if (offerHumanities && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && ((firesageSkip || (firesageElevatorClip && shuffled.indexOf("Demon Firesage") > -1)) || (lordvesselPlaced && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)))) {
+            //past quelaag w/ demon dead OR placed lordvessel and past ceaseless
+            if (offerHumanities && (quelaagSkip || shuffled.indexOf("Quelaag") > -1) && (shuffled.indexOf("Demon Firesage") > -1 || (lordvesselPlaced && (ceaselessSkip || shuffled.indexOf("Ceaseless Discharge") > -1)))) {
                 validBosses.push(options[i]);
             }
             //past quelaag, and either a) LV is placed w/ firesage alive and past ceaseless, or b) LV NOT placed w/ ceaseless alive and ceaseless skipping
